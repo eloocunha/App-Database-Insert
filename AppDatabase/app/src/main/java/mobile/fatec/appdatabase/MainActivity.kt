@@ -5,6 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -13,7 +14,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
+import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -36,11 +40,11 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.room.Room
-import edu.example.appauladsm.roomDB.Pessoa
-import edu.example.appauladsm.roomDB.PessoaDataBase
-import edu.example.appauladsm.ui.theme.AppAulaDSMTheme
-import edu.example.appauladsm.viewModel.PessoaViewModel
-import edu.example.appauladsm.viewModel.Repository
+import com.example.appdatabase.roomDB.Pessoa
+import com.example.appdatabase.roomDB.PessoaDataBase
+import com.example.appdatabase.ui.theme.AppDatabaseTheme
+import com.example.appdatabase.viewModel.PessoaViewModel
+import com.example.appdatabase.viewModel.Repository
 
 class MainActivity : ComponentActivity() {
     private val db by lazy {
@@ -182,6 +186,55 @@ fun App(viewModel: PessoaViewModel, mainActivity: MainActivity){
                     fontSize = 16.sp,
                     color = Color.White
                 )
+            }
+        }
+        Row(
+            Modifier
+                .padding(20.dp)
+        ) {
+        }
+        Divider()
+        Row(
+            Modifier
+                .padding(20.dp)
+        ) {}
+        Row(
+            Modifier.fillMaxWidth(),
+            Arrangement.Center
+        ){
+            Column(
+                Modifier.fillMaxWidth(0.5f),
+                Arrangement.Center
+            ){
+                Text("Nomes", color = Color.White)
+            }
+            Column( Modifier.fillMaxWidth(0.5f),
+                Arrangement.Center
+            ){
+                Text("Telefones", color = Color.White)
+            }
+        }
+        LazyColumn {
+            items(pessoaList){ pessoa ->
+                Row(
+                    Modifier.fillMaxWidth()
+                        .clickable {
+                            viewModel.deletePessoa(pessoa)
+                        },
+                    Arrangement.Center
+                ){
+                    Column(
+                        Modifier.fillMaxWidth(0.5f),
+                        Arrangement.Center
+                    ){
+                        Text(text = "${pessoa.nome}", color = Color.White)
+                    }
+                    Column( Modifier.fillMaxWidth(0.5f),
+                        Arrangement.Center
+                    ){
+                        Text(text = "${pessoa.telefone}", color = Color.White)
+                    }
+                }
             }
         }
     }
